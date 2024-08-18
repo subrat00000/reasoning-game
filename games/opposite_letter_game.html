@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Opposite Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #game-container {
+            text-align: center;
+        }
+        input[type="text"] {
+            margin-top: 10px;
+        }
+        .score {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Letter Opposite Game</h1>
+        <p id="question">What's the opposite of A?</p>
+        <input type="text" id="answer" placeholder="Enter your answer" /><br \><br \>
+        <button onclick="submitAnswer()">Submit</button>
+        <div class="score">
+            <p id="correct">Correct Answers: 0</p>
+            <p id="wrong">Wrong Answers: 0</p>
+        </div>
+    </div>
+
+    <script>
+        const letterOpposites = {
+            'A': 'Z', 'B': 'Y', 'C': 'X', 'D': 'W', 'E': 'V', 'F': 'U',
+            'G': 'T', 'H': 'S', 'I': 'R', 'J': 'Q', 'K': 'P', 'L': 'O',
+            'M': 'N', 'N': 'M', 'O': 'L', 'P': 'K', 'Q': 'J', 'R': 'I',
+            'S': 'H', 'T': 'G', 'U': 'F', 'V': 'E', 'W': 'D', 'X': 'C',
+            'Y': 'B', 'Z': 'A'
+        };
+
+        let correctCount = 0;
+        let wrongCount = 0;
+        let currentLetter = getRandomLetter();
+
+        function getRandomLetter() {
+            const letters = Object.keys(letterOpposites);
+            return letters[Math.floor(Math.random() * letters.length)];
+        }
+
+        function updateQuestion() {
+            currentLetter = getRandomLetter();
+            document.getElementById('question').innerText = `What's the opposite of ${currentLetter}?`;
+            document.getElementById('answer').value = '';
+            document.getElementById('answer').focus();
+        }
+
+        function submitAnswer() {
+            const userAnswer = document.getElementById('answer').value.toUpperCase();
+            const correctAnswer = letterOpposites[currentLetter];
+            
+            if (userAnswer === correctAnswer) {
+                correctCount++;
+            } else {
+                wrongCount++;
+            }
+            
+            document.getElementById('correct').innerText = `Correct Answers: ${correctCount}`;
+            document.getElementById('wrong').innerText = `Wrong Answers: ${wrongCount}`;
+            updateQuestion();
+        }
+
+        document.getElementById('answer').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent form submission if inside a form
+                submitAnswer();
+            }
+        });
+
+        // Initialize the game
+        updateQuestion();
+    </script>
+</body>
+</html>
